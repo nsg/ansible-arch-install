@@ -1,0 +1,19 @@
+---
+
+- name: Setup hosts
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+
+- name: Make sure systemd-networkd and systemd-resolved is started
+  service: name={{ item }} state=started enabled=yes
+  with_items:
+    - systemd-networkd
+    - systemd-resolved
+
+- name: Symlink resolv.conf to systemd
+  file:
+    src: /run/systemd/resolve/resolv.conf
+    dest: /etc/resolv.conf
+    force: yes
+    state: link

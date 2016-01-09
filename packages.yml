@@ -1,8 +1,0 @@
----
-
-- name: Install packages
-  pacman: name={{ item }}
-  with_items:
-    - vim
-    - intel-ucode
-    - linux-firmware
