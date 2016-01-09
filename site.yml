@@ -54,7 +54,7 @@
         - systemd-networkd
         - systemd-resolved
 
-    - name: Set the correct timezone
+    - name: Setup resolv.conf
       file:
         src: /run/systemd/resolve/resolv.conf
         dest: /etc/resolv.conf
