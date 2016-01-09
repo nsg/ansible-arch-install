@@ -1,0 +1,13 @@
+---
+
+- name: Setup systemd-boot menu
+  template:
+    src: loader.conf.j2
+    dest: /boot/loader/loader.conf
+
+- name: Setup systemd-boot entries
+  template:
+    src: "entries/{{ item }}.j2"
+    dest: "/boot/loader/entries/{{ item }}"
+  with_items:
+    - arch.conf

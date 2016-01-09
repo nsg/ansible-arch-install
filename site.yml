@@ -1,0 +1,69 @@
+---
+
+- hosts: all
+  vars:
+    # Arch's default python is python3
+    ansible_python_interpreter: "/usr/bin/env python2"
+
+  handlers:
+
+    - name: locale-regen
+      command: locale-gen
+
+    - name: mkinitcpio
+      command: mkinitcpio -p linux
+
+  roles:
+
+    - systemd-boot
+    - { role: aur, aur_package_name: packer }
+
+  tasks:
+
+    - name: Set the correct timezone
+      file:
+        src: /usr/share/zoneinfo/Europe/Stockholm
+        dest: /etc/localtime
+        state: link
+
+    - name: Setup locale.conf
+      template:
+        src: templates/locale.conf.j2
+        dest: /etc/locale.conf
+      notify: locale-regen
+
+    - name: Setup vconsole.conf
+      template:
+        src: templates/vconsole.conf.j2
+        dest: /etc/vconsole.conf
+
+    - name: Setup mkinitcpio.conf
+      template:
+        src: templates/mkinitcpio.conf.j2
+        dest: /etc/mkinitcpio.conf
+      notify: mkinitcpio
+
+    - name: Setup hosts
+      template:
+        src: templates/hosts.j2
+        dest: /etc/hosts
+
+    - name: Make sure systemd-networkd and systemd-resolved is started
+      service: name={{ item }} state=started enabled=yes
+      with_items:
+        - systemd-networkd
+        - systemd-resolved
+
+    - name: Set the correct timezone
+      file:
+        src: /run/systemd/resolve/resolv.conf
+        dest: /etc/resolv.conf
+        force: yes
+        state: link
+
+    - name: Setup makepkg.conf
+      template:
+        src: templates/makepkg.conf.j2
+        dest: /etc/makepkg.conf
+
+    - include: packages.yml

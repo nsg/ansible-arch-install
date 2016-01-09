@@ -1,0 +1,11 @@
+title Arch Linux
+linux /vmlinuz-linux
+initrd /intel-ucode.img
+initrd /initramfs-linux-fallback.img
+options {% for o in [
+"cryptdevice=UUID=7def05c9-7ecf-4b16-883c-ecdc2c78d509:system",
+"root=/dev/mapper/system",
+"rw",
+"nomodeset",
+"i915.preliminary_hw_support=1"
+] %}{{ o }} {% endfor %}
