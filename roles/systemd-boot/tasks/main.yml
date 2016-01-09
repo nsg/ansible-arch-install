@@ -11,3 +11,4 @@
     dest: "/boot/loader/entries/{{ item }}"
   with_items:
     - arch.conf
+    - arch-mainline.conf

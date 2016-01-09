@@ -12,6 +12,12 @@
 
     - name: mkinitcpio
       command: mkinitcpio -p linux
+      notify: mkinitcpio-mainline
+
+    - name: mkinitcpio-mainline
+      command: mkinitcpio -p linux-mainline
+      args:
+        removes: /etc/mkinitcpio.d/linux-mainline.preset
 
   roles:
 

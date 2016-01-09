@@ -1,0 +1,5 @@
+title Arch Linux Mainline
+linux /vmlinuz-linux-mainline
+initrd /intel-ucode.img
+initrd /initramfs-linux-mainline.img
+options {% for o in systemd_boot_options %}{{ o }} {% endfor %}
