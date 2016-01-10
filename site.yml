@@ -76,6 +76,7 @@
         - core/kmod
         - xf86-input-synaptics
         - firefox
+        - terminator
 
     - name: Start services (now, and on boot)
       service: state=started name={{ item }} enabled=yes
