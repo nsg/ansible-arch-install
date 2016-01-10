@@ -77,9 +77,11 @@
         - xf86-input-synaptics
         - firefox
         - terminator
+        - networkmanager
 
     - name: Start services (now, and on boot)
       service: state=started name={{ item }} enabled=yes
       with_items:
         - gdm
         - sshd
+        - NetworkManager
