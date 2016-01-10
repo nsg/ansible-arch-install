@@ -46,6 +46,11 @@
         src: templates/makepkg.conf.j2
         dest: /etc/makepkg.conf
 
+    - name: Setup modprobe.conf
+      template:
+        src: templates/modprobe.conf.j2
+        dest: /etc/modprobe.d/modprobe.conf
+
     - name: Install packages
       pacman: name={{ item }}
       with_items:
