@@ -1,13 +1,15 @@
 ---
 
+- name: Make sure aur install cache exists
+  file: path={{ aur_package_cache }} state=directory
+  register: new_install
+
 - name: Make sure we have deps installed
   pacman: name={{ item }}
   with_items:
-    - base-devel
-    - git
-
-- name: Make sure aur install cache exists
-  file: path={{ aur_package_cache }} state=directory
+    - base-devel      # base-devel was always reinstalled
+    - git             # so the when is a little hack :)
+  when: new_install|changed
 
 - name: Clone aur repo
   git:
