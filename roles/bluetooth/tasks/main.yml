@@ -1,0 +1,34 @@
+---
+
+- name: Install 7zip and bluez-utils
+  pacman: name={{ item }}
+  with_items:
+    - p7zip
+    - bluez-utils
+
+- name: Download image
+  get_url:
+    url: "http://downloads.dell.com/FOLDER03272920M/1/9350_Network_Driver_XMJK7_WN32_12.0.1.720_A00.EXE"
+    sha256sum: f16302444a1005c232d224abfabd99a0ce6cd02f0a7787e9be2ee06c937d0fda
+    dest: /tmp/9350_Network_Driver_XMJK7_WN32_12.0.1.720_A00.EXE
+  register: image_downloaded
+
+- name: Extract hex file from image
+  command: >
+    7z e /tmp/9350_Network_Driver_XMJK7_WN32_12.0.1.720_A00.EXE
+    Win32/BCM4350C5_003.006.007.0095.1703.hex
+  args:
+    chdir: /tmp
+  when: image_downloaded|changed
+
+- name: Convert the hex file to hcd
+  command: hex2hcd BCM4350C5_003.006.007.0095.1703.hex
+  args:
+    chdir: /tmp
+  when: image_downloaded|changed
+
+- name: Copy firmware file to the correct place
+  command: mv BCM4350C5_003.006.007.0095.1703.hcd /lib/firmware/brcm/BCM-0a5c-6412.hcd
+  args:
+    chdir: /tmp
+  when: image_downloaded|changed

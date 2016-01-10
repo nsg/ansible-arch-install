@@ -25,6 +25,7 @@
     - systemd-boot
     - network
     - { role: aur, aur_package_name: packer }
+    - bluetooth
 
   tasks:
 
