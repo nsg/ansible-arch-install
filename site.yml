@@ -49,6 +49,23 @@
     - name: Install packages
       pacman: name={{ item }}
       with_items:
-        - vim
+
+        # For the system
         - intel-ucode
         - linux-firmware
+
+        # For the shell needs
+        - vim
+        - pkgfile
+        - extra/bash-completion
+
+        # A DE is nice ...
+        - gnome
+        - gnome-extra
+        - gnome-shell
+        - gnome-software
+
+        # X
+        - extra/xorg-xinit
+        - extra/xf86-video-intel
+        - core/kmod
